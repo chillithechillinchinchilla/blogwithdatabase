@@ -30,7 +30,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-let posts = [];
 
 // We find all the posts, then sen to ejs page to render each value.
 app.get("/", function(req,res){
@@ -54,6 +53,8 @@ app.get("/compose", function(req, res){
   res.render("compose");
 });
 
+
+
 // Post new blog conent to mongoDB
 app.post("/compose", function(req,res){
   Post.create({
@@ -66,19 +67,28 @@ app.post("/compose", function(req,res){
 
 
 
-app.get("/posts/:postName", function(req, res){
-  const requestedTitle = _.lowerCase(req.params.postName);
+app.get("/posts/:postId", function(req, res){
+  //const requestedTitle = _.lowerCase(req.params.postName);
+  const postId = req.params.postId;
 
-  posts.forEach(function(post){
-    const storedTitle = _.lowerCase(post.title);
-
-    if (storedTitle === requestedTitle) {
-      res.render("post", {
-        title: post.title,
-        content: post.content
+  console.log(req.params);
+  Post.findOne({_id: postId}, function(err, foundPost){
+        res.render("post", {
+        title: foundPost.title,
+        content: foundPost.content
       });
-    }
-  });
+    });
+
+  // posts.forEach(function(post){
+  //   const storedTitle = _.lowerCase(post.title);
+  //
+  //   if (storedTitle === requestedTitle) {
+  //     res.render("post", {
+  //       title: post.title,
+  //       content: post.content
+  //     });
+  //   }
+  // });//end array search
 
 });
 
