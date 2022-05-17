@@ -67,9 +67,9 @@ app.post("/compose", function(req,res){
 
 
 
-app.get("/posts/:postId", function(req, res){
+app.get("/posts/:postingId", function(req, res){
   //const requestedTitle = _.lowerCase(req.params.postName);
-  const postId = req.params.postId;
+  const postId = req.params.postingId;
 
   console.log(req.params);
   Post.findOne({_id: postId}, function(err, foundPost){
